@@ -31,7 +31,7 @@ let g:ezoe_user = "EzoeRyou"
 Use your favorite manager.
 
 - [Pathogen](https://github.com/tpope/vim-pathogen)
-  - `git clone https://github.com/b4b4r07/vim-ezoe.git ~/.vim/bundle/vim-curbuf`
+  - `git clone https://github.com/b4b4r07/vim-ezoe.git ~/.vim/bundle/vim-ezoe`
 
 - [Vundle](https://github.com/gmarik/vundle)
   1. Add `Bundle 'b4b4r07/vim-ezoe'` to .vimrc

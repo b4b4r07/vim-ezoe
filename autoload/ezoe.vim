@@ -2,7 +2,9 @@ scriptencoding utf-8
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:highlights = '質問ではない。\?'
+    highlight Question cterm=NONE ctermfg=NONE ctermfg=Red   gui=NONE guifg=Red   guibg=NONE
+    highlight Emphasis cterm=NONE ctermfg=NONE ctermfg=White gui=NONE guifg=White guibg=NONE
+let s:highlights = '質問ではない。\?\|不\?自由'
 
 function! ezoe#ezoe(...)
     if a:0 == 0 || a:1 == ""
@@ -17,6 +19,7 @@ function! ezoe#post(question)
     let dom = webapi#html#parse(res.content)
     let token = dom.find("input").attr["value"]
     if token == ""
+        echoerr "token not set"
         return
     endif
 
@@ -37,20 +40,16 @@ function! ezoe#post(question)
 endfunction
 
 function! ezoe#list()
-    highlight Question cterm=NONE ctermfg=NONE ctermfg=Red   gui=NONE guifg=Red   guibg=NONE
-    highlight Emphasis cterm=NONE ctermfg=NONE ctermfg=White gui=NONE guifg=White guibg=NONE
-
     hide enew
     setlocal buftype=nofile nowrap nolist nonumber bufhidden=wipe
     setlocal modifiable nocursorline nocursorcolumn
-    let i = 0
     for item in webapi#feed#parseURL(printf("http://ask.fm/feed/profile/%s.rss", g:ezoe_user))
-        let w:m1 = matchadd("Emphasis", s:highlights)
-        let failed = append(i, item.link)
-        call matchaddpos("Question", [ line('.') ])
-        let failed = append(i+1, "  " . item.title)
-        let failed = append(i+2, "  " . item.content)
-        let failed = append(i+3, "  ")
+        call matchadd("Emphasis", s:highlights)
+        call matchaddpos("Question", [ line('.') + 1 ])
+        call append(0, item.link)
+        call append(1, "  " . item.title)
+        call append(2, "  " . item.content)
+        call append(3, "  ")
     endfor
     setlocal nomodifiable
 endfunction
