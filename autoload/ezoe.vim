@@ -2,7 +2,7 @@ scriptencoding utf-8
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:highlights = '質問ではない'
+let s:highlights = '質問ではない。\?'
 
 function! ezoe#ezoe(...)
     if a:0 == 0 || a:1 == ""
@@ -39,17 +39,18 @@ endfunction
 function! ezoe#list()
     highlight Question cterm=NONE ctermfg=NONE ctermfg=Red   gui=NONE guifg=Red   guibg=NONE
     highlight Emphasis cterm=NONE ctermfg=NONE ctermfg=White gui=NONE guifg=White guibg=NONE
-    for item in webapi#feed#parseURL('http://ask.fm/feed/profile/EzoeRyou.rss')
-        echo item.link
-        echohl Question
-        echo "  " item.title
-        echohl NONE
 
-        if item.content =~ s:highlights
-            echohl Emphasis
-        endif
-        echo "  " item.content
-        echo "  "
-        echohl NONE
+    hide enew
+    setlocal buftype=nofile nowrap nolist nonumber bufhidden=wipe
+    setlocal modifiable nocursorline nocursorcolumn
+    let i = 0
+    for item in webapi#feed#parseURL('http://ask.fm/feed/profile/EzoeRyou.rss')
+        let w:m1 = matchadd("Emphasis", s:highlights)
+        let failed = append(i, item.link)
+        call matchaddpos("Question", [ line('.') ])
+        let failed = append(i+1, "  " . item.title)
+        let failed = append(i+2, "  " . item.content)
+        let failed = append(i+3, "  ")
     endfor
+    setlocal nomodifiable
 endfunction
