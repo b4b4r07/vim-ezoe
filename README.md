@@ -19,6 +19,13 @@
 
 	![](doc/post.png)	
 
+### Variables
+
+```vim
+" Default user is
+let g:ezoe_user = "EzoeRyou"
+```
+
 ## Installation
 
 Use your favorite manager.

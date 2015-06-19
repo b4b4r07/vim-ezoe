@@ -3,6 +3,10 @@ if exists('g:loaded_ezoe')
 endif
 let g:loaded_ezoe = 1
 
+if !exists('g:ezoe_user')
+  let g:ezoe_user = "EzoeRyou"
+endif
+
 command! -nargs=? Ezoe call ezoe#ezoe(<q-args>)
 
 augroup clear-highlight
